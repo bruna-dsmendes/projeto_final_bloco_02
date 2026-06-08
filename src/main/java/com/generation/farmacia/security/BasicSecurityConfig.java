@@ -44,6 +44,8 @@ public class BasicSecurityConfig {
                 // GETs de produtos e categorias são públicos
                 .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
+                
+                .requestMatchers(HttpMethod.POST, "/produtos").permitAll()
 
                 // Post, put e delete em produtos/categorias exige role ADMIN
                 .requestMatchers(HttpMethod.POST,   "/produtos/**").hasRole("ADMIN")
