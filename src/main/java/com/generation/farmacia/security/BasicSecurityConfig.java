@@ -31,6 +31,15 @@ public class BasicSecurityConfig {
     private UserDetailsService userDetailsService;
 
     @Bean
+    public org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+        );
+    }
+    
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             .csrf(csrf -> csrf.disable())
@@ -46,6 +55,11 @@ public class BasicSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
                 
                 .requestMatchers(HttpMethod.POST, "/produtos").permitAll()
+                
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
+                
 
                 // Post, put e delete em produtos/categorias exige role ADMIN
                 .requestMatchers(HttpMethod.POST,   "/produtos/**").hasRole("ADMIN")
