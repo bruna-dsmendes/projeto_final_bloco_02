@@ -31,13 +31,13 @@ public class CategoriaController {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-    // Pesquisar todos
+    // Pesquisar todas as categorias
     @GetMapping
     public ResponseEntity<List<Categoria>> getAll() {
         return ResponseEntity.ok(categoriaRepository.findAll());
     }
 
-    // Pesquisar por Id
+    // Pesquisar categoria por Id
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> getById(@PathVariable Long id) {
         return categoriaRepository.findById(id)
@@ -45,7 +45,7 @@ public class CategoriaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Pesquisar por nome (Método especial)
+    // Pesquisar categoria por nome (Método especial)
     @GetMapping("/nome/{nome}")
     public ResponseEntity<List<Categoria>> getByNome(@PathVariable String nome) {
         return ResponseEntity.ok(categoriaRepository.findAllByNomeContainingIgnoreCase(nome));

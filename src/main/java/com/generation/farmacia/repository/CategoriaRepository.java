@@ -9,6 +9,6 @@ import com.generation.farmacia.model.Categoria;
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     
-    // Método especial (nome do produto) 
+    // Método especial (nome da categoria) 
     List<Categoria> findAllByNomeContainingIgnoreCase(String nome);
 }
