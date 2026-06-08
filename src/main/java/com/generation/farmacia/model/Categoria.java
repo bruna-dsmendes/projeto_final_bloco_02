@@ -31,6 +31,7 @@ public class Categoria {
     @Size(min = 5, max = 1000, message = "O atributo descrição deve conter entre 5 e 1000 caracteres")
     private String descricao;
     
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("categoria")
     private List<Produto> produto;
@@ -66,4 +67,14 @@ public class Categoria {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
+	}
+    
+    
 }
