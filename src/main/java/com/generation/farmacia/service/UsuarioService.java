@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.generation.farmacia.dto.UsuarioUpdateDTO;
 import com.generation.farmacia.model.Usuario;
 import com.generation.farmacia.model.UsuarioLogin;
 import com.generation.farmacia.repository.UsuarioRepository;
@@ -146,4 +147,24 @@ public class UsuarioService {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(senha);
     }
+    
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder; // Para criptografar a nova senha
+
+    public Optional<Usuario> atualizarUsuario(Long id, UsuarioUpdateDTO dto) {
+        return usuarioRepository.findById(id).map(usuario -> {
+            usuario.setNome(dto.nome());
+   
+            
+            // Se ele digitou uma nova senha, criptografa antes de salvar
+            if (dto.senha() != null && !dto.senha().isBlank()) {
+                usuario.setSenha(passwordEncoder.encode(dto.senha()));
+            }
+            
+            return usuarioRepository.save(usuario);
+        });
+    
+    }
+    
+    
 }

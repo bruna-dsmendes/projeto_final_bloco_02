@@ -27,6 +27,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        
+        String requestURI = request.getRequestURI();
+
+        // Se for rota do Swagger, deixa passar direto sem validar token
+        if (requestURI.contains("/v3/api-docs") || requestURI.contains("/swagger-ui")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String authHeader = request.getHeader("Authorization");
         String token = null;
