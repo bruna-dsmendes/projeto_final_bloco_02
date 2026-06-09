@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.generation.farmacia.dto.UsuarioResponseDTO;
 import com.generation.farmacia.dto.UsuarioUpdateDTO;
 import com.generation.farmacia.model.Usuario;
 import com.generation.farmacia.model.UsuarioLogin;
@@ -53,9 +54,17 @@ public class UsuarioController {
     }
     
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody UsuarioUpdateDTO dto) {
+    public ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody UsuarioUpdateDTO dto) {
         return usuarioService.atualizarUsuario(id, dto)
-                .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+                .map(user -> {
+                    UsuarioResponseDTO response = new UsuarioResponseDTO(
+                        user.getId(), 
+                        user.getNome(), 
+                        user.getUsuario(), 
+                        user.getFoto()
+                    );
+                    return ResponseEntity.status(HttpStatus.OK).body(response);
+                })
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
